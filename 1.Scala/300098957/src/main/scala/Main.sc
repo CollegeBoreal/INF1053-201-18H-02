@@ -1,6 +1,6 @@
-val a = 1
+var i=1
 
-a
+i + 1
 
 
 

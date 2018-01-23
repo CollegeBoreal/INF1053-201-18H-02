@@ -19,7 +19,7 @@ Programmation de serveur
    * [Cucumber](https://bitbucket.org/jordipradel/cucumber-scala-example/)
 - Unit Suite
 
-# [UML](2.UML)
+# [UML](C.UML)
    Le langage de modélisation unifié, de l'anglais Unified Modeling Language (UML), est un langage de modélisation graphique à base de pictogrammes conçu pour fournir une méthode normalisée pour visualiser la conception d'un système. Il est couramment utilisé en développement logiciel et en conception orientée objet.
 
    L'UML est le résultat de la fusion de précédents langages de modélisation objet : Booch, OMT, OOSE. Principalement issu des travaux de Grady Booch, James Rumbaugh et Ivar Jacobson, UML est à présent un standard adopté par l'Object Management Group (OMG).

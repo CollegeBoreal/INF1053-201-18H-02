@@ -23,7 +23,7 @@ http://www.omg.org/spec/UML/2.5/
 
 # Outil 
 
-[Visual Paradigm](https://www.visual-paradigm.com/)
+[Visual Paradigm](https://www.visual-paradigm.com/download/community.jsp)
 
 [Poseidon UML](http://www.gentleware.com/downloadcenter.html)
 

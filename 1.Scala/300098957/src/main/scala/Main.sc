@@ -48,3 +48,6 @@ _zscore(34.1,15.9)(5)
 def __zscore(mean:R, sd:R)(x:R) = (x-mean)/sd
 
 __zscore(34.1,15.9)(5)
+
+(x: Int) => 1 + x
+

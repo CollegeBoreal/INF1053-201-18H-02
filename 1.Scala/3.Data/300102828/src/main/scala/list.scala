@@ -19,6 +19,14 @@ object List {
   def apply[A](as: A*): List[A] =
     if (as.isEmpty) Nil
     else Cons(as.head, apply(as.tail: _*))
+  def tail [A](as: List[A]): List[A] = as match  {
+    case Nil => Nil
+    case Cons(_, xs) => xs
+  }
+  def setHead[A](a: A, as: List[A]): List[A] = as match {
+    case Nil => Cons(a, Nil)
+    case Cons(_, xs) => Cons(a,xs)
+  }
 
 
 
@@ -33,6 +41,7 @@ object List {
     println(List.sum(ex3))
     val ex4: List[Int] = Cons(4, Cons(11, Cons(20, Nil)));
     println(List.sum(ex4))
+
     //produit
     val ex5: List[Double] = Nil;
     println(List.product(ex5))
@@ -51,7 +60,10 @@ object List {
       case Cons(h,t) => h + sum(t)
       case _ => 101
     }
-println(x)
+ println(x)
+    //exercice 3.2
+ println(List.tail(ex8))
+    println(List.setHead(6,ex8))
   }
 
 }

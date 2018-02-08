@@ -13,7 +13,7 @@
 
 * Continuer l'objet `List.scala`
 
-   Faire les exercices 3.4, 3.5, 3.6 de la page 21 a la page 37 
+   Faire les exercices 3.4, 3.5, 3.6 de la page 36 a la page 37 
 
    
    

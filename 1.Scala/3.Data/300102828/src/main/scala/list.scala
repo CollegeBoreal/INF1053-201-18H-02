@@ -23,12 +23,24 @@ object List {
     case Nil => Nil
     case Cons(_, xs) => xs
   }
+
   def setHead[A](a: A, as: List[A]): List[A] = as match {
     case Nil => Cons(a, Nil)
-    case Cons(_, xs) => Cons(a,xs)
+    case Cons(_, xs) => Cons(a, xs)
   }
 
+def drop[A](as: List[A], n: Int): List[A] =
+  if (n <= 0) as
+  else as match {
+    case Nil => Nil
+    case Cons(_, xs) => drop(xs, n-1)
+  }
 
+  def dropWhile[A](as: List[A], f: A => Boolean): List[A] =
+    as match {
+      case Cons(b,xs) if f(b) => dropWhile(xs, f)
+      case _ => as
+    }
 
   def main(args: Array[String]): Unit = {
 
@@ -43,12 +55,9 @@ object List {
     println(List.sum(ex4))
 
     //produit
-    val ex5: List[Double] = Nil;
-    println(List.product(ex5))
-    val ex6: List[Double] = Cons(1.0, Cons(0.0, Nil));
-    println(List.product(ex6))
-    val ex7: List[Double] = Cons(4, Cons(11, Cons(20, Nil)));
-    println(List.product(ex7))
+    val ex5: List[Double] = Nil;println(List.product(ex5))
+    val ex6: List[Double] = Cons(1.0, Cons(0.0, Nil));println(List.product(ex6))
+    val ex7: List[Double] = Cons(4, Cons(11, Cons(20, Nil)));println(List.product(ex7))
 
 
     //constructeur
@@ -64,6 +73,7 @@ object List {
     //exercice 3.2
  println(List.tail(ex8))
     println(List.setHead(6,ex8))
+   // println(List.drop(ex8))
   }
 
 }

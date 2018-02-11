@@ -21,7 +21,12 @@ object List {
 
   def tail[A](as: List[A]): List[A] = as match {
     case Nil => Nil
-    case Cons(x, xs) => xs
+    case Cons( _, xs) => xs
+  }
+
+  def setHead[A](a: A, as: List[A]): List[A] = as match {
+    case Nil => Cons(a,Nil)
+    case Cons( _, xs) => Cons(a, xs)
   }
 
   def main(args: Array[String]): Unit = {
@@ -49,7 +54,11 @@ object List {
     }
     println(x)
 
-    print(List.tail(ex8))
+    // Exercise 3.2
+    println(List.tail(ex8))
+
+    // Exercise 3.3
+    println(List.setHead(6,ex8))
 
   }
 

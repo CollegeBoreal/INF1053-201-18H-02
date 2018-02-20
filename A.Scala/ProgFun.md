@@ -1,3 +1,4 @@
+```
 Dans la leçon 1.1, retenir :
 Les Paradigmes de Programmation (3 essentiellement)
  
@@ -31,3 +32,4 @@ Point-virgule et Incrustation (Infix)
  
 Dans la leçon 1.7, retenir :
 Récursion (i.e. Tail Recursion)
+```

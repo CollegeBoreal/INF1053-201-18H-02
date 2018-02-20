@@ -41,6 +41,17 @@ def drop[A](as: List[A], n: Int): List[A] =
       case Cons(b,xs) if f(b) => dropWhile(xs, f)
       case _ => as
     }
+  def foldRight[A,B](as: List[A], z: B)(f: (A,B) => B): B =
+    as match {
+      case Nil => z
+      case  Cons(x, xs) => f(x, foldRight(xs, z)(f))
+    }
+
+  def sum2(ns: List[Int]) =
+    foldRight(ns, 0)((x,y) => x + y)
+  def product2(ns: List[Double])=
+    foldRight(ns, 1.0)(_*_)
+  
 
   def main(args: Array[String]): Unit = {
 
@@ -62,6 +73,8 @@ def drop[A](as: List[A], n: Int): List[A] =
 
     //constructeur
     val ex8: List[Int] = List(1, 2, 3, 4, 5);println(List.sum(ex8))
+    val ex9: List[Double] = List(1.0, 2.0, 3.0, 4.0, 5.0)
+
     val x = List(1,2,3,4,5) match {
       case Cons(x,Cons(2, Cons(4 , _))) => x
       case Nil => 42
@@ -72,8 +85,13 @@ def drop[A](as: List[A], n: Int): List[A] =
  println(x)
     //exercice 3.2
  println(List.tail(ex8))
+
     println(List.setHead(6,ex8))
-   // println(List.drop(ex8))
+
+    println(drop(ex8,2))
+    println(sum2(ex8))
+    println(product2(ex9))
+    println(dropWhile(ex8, (x: Int ) => x <4))
   }
 
 }

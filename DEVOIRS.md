@@ -15,5 +15,12 @@
 
    Faire les exercices 3.4, 3.5, 3.6 de la page 36 a la page 37 
 
+
+ 27/02/2018
+
+* Continuer l'objet `List.scala`
+
+   Faire les exercices 3.11 a 3.24 de la page 41 a la page 44 (Hard: Optionnel) 
+
    
    

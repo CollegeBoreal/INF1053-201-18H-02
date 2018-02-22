@@ -1,3 +1,4 @@
+import scala.annotation.tailrec
 
 sealed trait List[+A]
 case object Nil extends List[Nothing]
@@ -41,18 +42,48 @@ def drop[A](as: List[A], n: Int): List[A] =
       case Cons(b,xs) if f(b) => dropWhile(xs, f)
       case _ => as
     }
+  def foldRight[A,B](as: List[A], z: B)(f: (A,B) => B): B =
+    as match {
+      case Nil => z
+      case  Cons(x, xs) => f(x, foldRight(xs, z)(f))
+    }
+
+  def foldRight3[A,B](as: List[A], z: B)(f: (A,B) => B): B =
+    as match {
+      case Nil => z
+      case Cons(x, _) => z
+      case  Cons(x, xs) => f(x, foldRight(xs, z)(f))
+    }
+def length[A](as: List[A]): Int =
+  foldRight(as, 0)((_,acc) => acc + 1)
+
+  @tailrec
+  def foldLeft[A,B](as: List[A], z:B)(f: (B, A) => B): B =
+    as match {
+    case Nil => z
+    case Cons(x,xs) => foldLeft(xs, f(z,x))(f)
+
+  }
+
+  def sum2(ns: List[Int]) = foldRight(ns, 0)((x,y) => x + y)
+
+  def product2(ns: List[Double])= foldRight(ns, 1.0)(_*_)
+
+  def product3(ns: List[Double])= foldRight3(ns, 1.0)(_*_)
+
+
+
 
   def main(args: Array[String]): Unit = {
 
     //somme
-    val ex1: List[Int] = Nil;
-    println(List.sum(ex1))
-    val ex2: List[Int] = Cons(1, Nil);
-    println(List.sum(ex2))
-    val ex3: List[Int] = Cons(4, Cons(11, Nil));
-    println(List.sum(ex3))
-    val ex4: List[Int] = Cons(4, Cons(11, Cons(20, Nil)));
-    println(List.sum(ex4))
+    val ex1: List[Int] = Nil;println(List.sum(ex1))
+
+    val ex2: List[Int] = Cons(1, Nil);println(List.sum(ex2))
+
+    val ex3: List[Int] = Cons(4, Cons(11, Nil));println(List.sum(ex3))
+
+    val ex4: List[Int] = Cons(4, Cons(11, Cons(20, Nil)));println(List.sum(ex4))
 
     //produit
     val ex5: List[Double] = Nil;println(List.product(ex5))
@@ -62,6 +93,8 @@ def drop[A](as: List[A], n: Int): List[A] =
 
     //constructeur
     val ex8: List[Int] = List(1, 2, 3, 4, 5);println(List.sum(ex8))
+    val ex9: List[Double] = List(1.0, 2.0, 3.0, 4.0, 5.0)
+
     val x = List(1,2,3,4,5) match {
       case Cons(x,Cons(2, Cons(4 , _))) => x
       case Nil => 42
@@ -72,8 +105,18 @@ def drop[A](as: List[A], n: Int): List[A] =
  println(x)
     //exercice 3.2
  println(List.tail(ex8))
+
     println(List.setHead(6,ex8))
-   // println(List.drop(ex8))
+
+    println(drop(ex8,2))
+    println(sum2(ex8))
+    println(product2(ex9))
+    println(dropWhile(ex8, (x: Int ) => x <4))
+    //exe 3.8
+    println(foldRight(List(1,2,3), Nil:List[Int])(Cons(_,_)))
+    //exe 3.9
+    println(length(ex8))
+    println(foldLeft(ex8,0) (_+_))
   }
 
 }

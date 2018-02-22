@@ -1,4 +1,4 @@
 
 
 
-!{alt tag}(./plan.png)
+![alt tag](./plan.png)

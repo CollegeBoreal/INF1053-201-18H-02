@@ -22,7 +22,7 @@ object Tree {
   def depth[A](t: Tree[A]): Int =
     t match {
       case Leaf(_) => 0
-      case Branch(l,r) =>
+      case Branch(l,r) => 1 + (depth(l) max depth(r))
     }
 
   def main(args: Array[String]): Unit = {
@@ -32,6 +32,7 @@ object Tree {
     val t = Leaf(5);println(size(t))
     val t1 = Branch(Leaf('a'),Branch(Leaf('c'),Leaf('b')));println(size(t1))
     val t2 = Branch(Leaf(3),Branch(Leaf(0),Leaf(5)));println(max(t2))
+    val t3= Branch(Leaf(3),Branch(Leaf(0),Leaf(5)));println(depth(t3))
 
   }
 }

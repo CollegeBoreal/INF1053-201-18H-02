@@ -1,3 +1,6 @@
+import scala.annotation.tailrec
+import scala.util.control.TailCalls.TailRec
+
 sealed trait List[+A]
 case object Nil extends List[Nothing]
 case class Cons[+A](head: A, tail: List[A]) extends List[A]
@@ -65,9 +68,25 @@ object List {
     case Cons(x, xs) => f(x, foldRight(xs, z)(f))
   }
 
-  def sum2(ns: List[Int]) = foldRight(ns,0)(_+_)
+  def foldRight3[A,B](as: List[A], z: B)(f: (A, B) => B): B = as match {
+    case Nil => z
+    case Cons(x, _) if x == 0.0 => z // Not working
+    case Cons(x, xs) => f(x, foldRight(xs, z)(f))
+  }
+
+  def sum2(ns: List[Int]): Int = foldRight(ns,0)(_+_)
 
   def product2(ns: List[Double]) = foldRight(ns, 1.0)(_*_)
+
+  def product3(ns: List[Double]) = foldRight3(ns, 1.0)(_*_)
+
+  def length[A](as: List[A]): Int = List.foldRight(as,0)((_, acc) => acc + 1)
+
+  @tailrec
+  def foldLeft[A,B](as: List[A], z: B)(f: (B, A) => B):B = as match {
+    case Nil => z
+    case Cons(x, xs) => foldLeft( xs, f(z,x))(f)
+  }
 
   def main(args: Array[String]): Unit = {
 
@@ -118,6 +137,21 @@ object List {
 
     println(product2(ex9))
 
+    // Exercise   3.7
+    val ex10: List[Double] = List(1.0,2.0,0.0,4.0,5.0)
+    println(product3(ex10))
+
+    // Exercise   3.8
+    println(foldRight(List(1,2,3), Nil:List[Int])(Cons(_,_)))
+    println(List(1,2,3) == foldRight(List(1,2,3), Nil:List[Int])(Cons(_,_)))
+
+    // Exercise 3.9
+    println(List.length(ex8))
+
+
+    // Exercise 3.10
+    println(foldLeft(List(1,2,3), 0)(_+_))
+    println(foldLeft(List(2.0,3.0,4.0), 1.0)(_*_))
 
   }
 

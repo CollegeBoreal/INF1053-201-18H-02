@@ -82,10 +82,70 @@ object List {
 
   def length[A](as: List[A]): Int = List.foldRight(as,0)((_, acc) => acc + 1)
 
+  def sum4(as: List[Int]): Int = foldLeft(as,0)(_+_)
+
+  def prod4(as: List[Double]): Double = foldLeft(as,1.0)(_*_)
+
   @tailrec
   def foldLeft[A,B](as: List[A], z: B)(f: (B, A) => B):B = as match {
     case Nil => z
     case Cons(x, xs) => foldLeft( xs, f(z,x))(f)
+  }
+
+  def reverse[A](as: List[A]): List[A] = {
+    foldLeft(as, List[A]())((acc,h) => Cons(h,acc))
+  }
+
+  def append[A](as: List[A])(elem: A): List[A] = {
+    def loop(xs: List[A], acc: List[A]): List[A] =
+      xs match {
+        case Nil => Nil
+        case Cons(x, Nil) => Cons(elem,Cons(x,acc))
+        case Cons(x, xs) => loop(xs, Cons(x, acc)  )
+      }
+
+    reverse(loop(as, Nil))
+  }
+
+  def append1[A](as: List[A])(ls: List[A]): List[A] =
+    foldRight(as, ls)((h,t) => Cons(h,t))
+
+  def append2[A](as: List[A])(ls: List[A]): List[A] =
+    foldLeft(as, ls)((t,h) => Cons(h,t))
+
+  def append3[A](as: List[A], ls: List[A]): List[A] =
+    foldRight(as, ls)((h,t) => Cons(h,t))
+
+  def concat[A](as: List[List[A]]): List[A] =
+    foldRight(as, Nil: List[A])(append3)
+
+  def add(as: List[Int]): List[Int] =
+    foldRight(as, Nil: List[Int])((x, xs) => Cons( x + 1, xs))
+
+  def doubleToString(as: List[Double]): List[String] =
+    foldRight(as, Nil: List[String])((x, xs) => Cons(x.toString, xs))
+
+  def map[A,B](as: List[A])(f: A => B): List[B] =
+    foldRight(as, Nil: List[B])((x, xs) => Cons(f(x),xs))
+
+  def filter[A](as: List[A])(f: A => Boolean): List[A] =
+    foldRight(as, Nil: List[A])((x, xs) => if (f(x)) Cons(x,xs) else xs)
+
+  def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] = concat(map(as)(f))
+
+  def filter2[A](as: List[A])(f: A => Boolean): List[A] =
+    flatMap(as)(x => if (f(x)) Cons(x,Nil) else Nil)
+
+  def zipWith(as: List[Int], ls: List[Int]): List[Int] = (as,ls) match {
+    case (Nil,_) => Nil
+    case (_, Nil) => Nil
+    case (Cons(h1, t1), Cons(h2, t2)) => Cons(h1 + h2, zipWith(t1,t2))
+  }
+
+  def zipWith[A, B, C](as: List[A])(ls: List[B])(f: (A, B) => C): List[C] = (as,ls) match {
+    case (Nil,_) => Nil
+    case (_, Nil) => Nil
+    case (Cons(h1, t1), Cons(h2, t2)) => Cons(f(h1,h2), zipWith(t1)(t2)(f))
   }
 
   def main(args: Array[String]): Unit = {
@@ -152,6 +212,47 @@ object List {
     // Exercise 3.10
     println(foldLeft(List(1,2,3), 0)(_+_))
     println(foldLeft(List(2.0,3.0,4.0), 1.0)(_*_))
+
+    // Exercise 3.11
+    println(sum4(ex8))
+    println(prod4(ex9))
+
+    // Exercise 3.12
+    val ex11: List[Int] = List(1,2,3)
+    println(reverse(ex11))
+
+    // Exercise 3.14
+    println(append(ex8)(6))
+    println(append1(ex8)(ex11))
+    println(append2(ex8)(ex11))
+
+    // Exercise 3.15
+    val ex12: List[List[Int]] = List(List(1,2,3),List(1,2,3))
+    println(concat(ex12))
+
+    // Exercise 3.16
+    println(add(ex8))
+
+    // Exercise 3.17
+    println(doubleToString(ex9))
+
+    // Exercise 3.18
+    println(map(ex8)(_ - 1))
+
+    // Exercise 3.19
+    println(filter(ex8)(_ % 2 != 0))
+
+    // Exercise 3.20
+    println(flatMap(ex11)(i => List(i,i)))
+
+    // Exercise 3.21
+    println(filter2(ex8)(_ % 2 == 0))
+
+    // Exercise 3.22
+    println(zipWith(List(1,2,3),List(4,5,6)))
+
+    // Exercise 3.23
+    println(zipWith(List(1,2,3))(List(4,5,6))(_+_))
 
   }
 

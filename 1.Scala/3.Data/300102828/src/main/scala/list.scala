@@ -71,8 +71,32 @@ def length[A](as: List[A]): Int =
 
   def product3(ns: List[Double])= foldRight3(ns, 1.0)(_*_)
 
+  //3.11
+  def sum3(as: List[Int]) = foldLeft(as, 0)(_ + _)
+  def product4(as: List[Double]) = foldLeft(as, 1.0)(_ * _)
 
+  def length1[A](as: List[A]): Int = foldLeft(as, 0)((acc,h) => acc + 1)
 
+//exe 3.12
+def reverse[A](as: List[A]): List[A] =
+    foldLeft(as, List[A]())((acc,h) => Cons(h,acc))
+
+//exe 3.16
+
+  def add(as: List[Int]): List[Int] =
+    foldRight(as, Nil:List[Int])((xs,x) => Cons(xs+1,x))
+
+  //exe 3.17
+
+  def doubleToString(as: List[Double]): List[String] =
+    foldRight(as, Nil:List[String])((xs,x) => Cons(xs.toString,x))
+   //exe 3.22
+
+  def addPairwise(a: List[Int], b: List[Int]): List[Int] = (a,b) match {
+    case (Nil, _) => Nil
+    case (_, Nil) => Nil
+    case (Cons(s1,r1), Cons(s2,r2)) => Cons(s1+s2, addPairwise(r1,r2))
+  }
 
   def main(args: Array[String]): Unit = {
 
@@ -93,9 +117,13 @@ def length[A](as: List[A]): Int =
 
     //constructeur
     val ex8: List[Int] = List(1, 2, 3, 4, 5);println(List.sum(ex8))
+    val exe11: List[Int] = List(2, 1, 3, 0, 5)
     val ex9: List[Double] = List(1.0, 2.0, 3.0, 4.0, 5.0)
 
+    val exe10: List[Int] = List(1,2,3)
+
     val x = List(1,2,3,4,5) match {
+
       case Cons(x,Cons(2, Cons(4 , _))) => x
       case Nil => 42
       case Cons(x, Cons(y, Cons(3 ,Cons(4, _)))) => x + y
@@ -117,6 +145,21 @@ def length[A](as: List[A]): Int =
     //exe 3.9
     println(length(ex8))
     println(foldLeft(ex8,0) (_+_))
+   //exe 3.11
+    println(length1(ex8))
+
+    //exe 3.12
+    println(reverse(exe10))
+
+    //exe 3.16
+    println(add(ex8))
+
+    //exe 3.17
+
+    println(doubleToString(ex9))
+    //exe 3.22
+    println(addPairwise(ex8, exe11))
+
   }
 
 }

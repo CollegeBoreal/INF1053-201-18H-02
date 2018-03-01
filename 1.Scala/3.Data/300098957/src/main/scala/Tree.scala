@@ -35,6 +35,12 @@ object Tree {
 
   def sizeViaFold[A](t: Tree[A]): Int = fold(t)(a => 1)(_+_)
 
+  def maxViaFold[A](t: Tree[A])(p: (A,A) => A): A = fold(t)(a => a)(p)
+
+  def depthViaFold[A](t: Tree[A]): Int = fold(t)(a => 0)((d1,d2) => 1 + (d1 max d2))
+
+  def mapViaFold[A](t: Tree[A])(f: A => A): Tree[A] = fold(t)(a => Leaf(f(a)): Tree[A])(Branch(_,_))
+
   def main(args: Array[String]): Unit = {
 
     // Exercice 3.25
@@ -52,6 +58,12 @@ object Tree {
     val t4 = Branch(Branch(Leaf(1),Leaf(2)),Leaf(3)); println(map(t4)(_ + 1))
 
     assert(sizeViaFold(Branch(Leaf('a'),Branch(Leaf('c'),Leaf('b'))))==3)
+
+    assert(maxViaFold(t4)(_ max _)==3)
+
+    assert(depthViaFold(t4)==2)
+
+    assert(mapViaFold(t4)((x: Int) => x + 1)==Branch(Branch(Leaf(2),Leaf(3)),Leaf(4)))
 
   }
 }

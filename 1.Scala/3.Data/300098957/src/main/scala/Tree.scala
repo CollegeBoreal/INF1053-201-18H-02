@@ -55,15 +55,16 @@ object Tree {
     assert(depth(Branch(Branch(Leaf(1),Leaf(2)),Leaf(3)))==2)
 
     // Exercice 3.28
-    val t4 = Branch(Branch(Leaf(1),Leaf(2)),Leaf(3)); println(map(t4)(_ + 1))
+    val t4 = Branch(Branch(Leaf(1),Leaf(2)),Leaf(3))
+    val t5 = Branch(Branch(Leaf(2),Leaf(3)),Leaf(4))
 
+    assert(map(t4)(_ + 1)==t5)
+
+    // Exercice 3.29
     assert(sizeViaFold(Branch(Leaf('a'),Branch(Leaf('c'),Leaf('b'))))==3)
-
     assert(maxViaFold(t4)(_ max _)==3)
-
     assert(depthViaFold(t4)==2)
-
-    assert(mapViaFold(t4)((x: Int) => x + 1)==Branch(Branch(Leaf(2),Leaf(3)),Leaf(4)))
+    assert(mapViaFold(t4)(_ + 1)==t5)
 
   }
 }

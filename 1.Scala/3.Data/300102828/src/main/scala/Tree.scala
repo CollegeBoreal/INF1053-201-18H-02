@@ -62,7 +62,7 @@ object Tree {
     val t4= Branch(Branch(Leaf(1),Leaf(2)),Leaf(3));println(map(t4)(_+ 1))
     assert(maximumViaFold(t4)(_ max _)==3)
     assert(depthViaFold(t4)==2)
-    assert(mapViaFold(t4)( _ + 1))==Branch(Branch(Leaf(2),Leaf(3)),Leaf(4))
+    assert(mapViaFold(t4)( _ + 1)==Branch(Branch(Leaf(2),Leaf(3)),Leaf(4)))
 
 
   }

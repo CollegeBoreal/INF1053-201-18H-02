@@ -23,10 +23,22 @@ object Tree {
     case Branch( l, r) => 1 + (depth(l) max depth(r))
   }
 
+  def map[A,B](t: Tree[A])(f: A => B): Tree[B] = t match {
+    case Leaf(n) => Leaf(f(n))
+    case Branch(l,r) => Branch(map(l)(f),map(r)(f))
+  }
+
+  def fold[A,B](t: Tree[A])(f: A => B)(g: (B,B) => B): B = t match {
+    case Leaf(a) => f(a)
+    case Branch(l,r) => g(fold(l)(f)(g),fold(r)(f)(g))
+  }
+
+  def sizeViaFold[A](t: Tree[A]): Int = fold(t)(a => 1)(_+_)
+
   def main(args: Array[String]): Unit = {
 
     // Exercice 3.25
-    val t = Leaf(5); println(size(t))
+    val t = Leaf(5); assert(size(t)==1)
     assert(size(Branch(Leaf('a'),Branch(Leaf('c'),Leaf('b'))))==3)
 
    // Exercice 3.26
@@ -35,6 +47,11 @@ object Tree {
 
     // Exercice 3.27
     assert(depth(Branch(Branch(Leaf(1),Leaf(2)),Leaf(3)))==2)
+
+    // Exercice 3.28
+    val t4 = Branch(Branch(Leaf(1),Leaf(2)),Leaf(3)); println(map(t4)(_ + 1))
+
+    assert(sizeViaFold(Branch(Leaf('a'),Branch(Leaf('c'),Leaf('b'))))==3)
 
   }
 }

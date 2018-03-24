@@ -9,7 +9,7 @@ import State._
 
 object Candy {
 
-  def updateRule = (i: Input) => (s: Machine) => (i, s) match {
+  def updateRule: Input => Machine => Machine = (i: Input) => (s: Machine) => (i, s) match {
           case (_, Machine(_, 0, _))        => s
           case (Coin, Machine(false, _, _)) => s
           case (Turn, Machine(true, _, _))  => s
@@ -19,9 +19,10 @@ object Candy {
 
   def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] =
     for {
-      _ <- sequenceViaFoldRight(inputs map (modify[Machine] _ compose updateRule))
+      _ <- sequenceViaFoldRight(inputs.map( modify[Machine] _  compose updateRule))
       s <- get
     } yield (s.coins, s.candies)
+
 
   def main(args: Array[String]): Unit = {
 
@@ -36,10 +37,18 @@ object Candy {
     assert(state2.candies==0)
     assert(b==(1,0)) // $1, No candies left
 
-    val (x,state3) = simulateMachine(List(Coin,Turn)).run(Machine(locked = true, 1, 1))
+    // the Input Machine has 1 coin and 1 candy, and 1 candy is successfully bought
+    val (x,state3) = simulateMachine( Coin :: Turn :: Nil).run(Machine(locked = true, 1, 1))
     assert(state3.locked)
     assert(state3.candies==0)
     assert(x==(2,0)) // $2, No candies left
+
+    // the Input Machine has 10 coins and 5 candies, and a total of 4 candies are successfully bought
+    val (y,state4) = simulateMachine(List(Coin,Turn,Coin,Turn,Coin,Turn,Coin,Turn)).run(Machine(locked = true, 5, 10))
+    assert(state4.locked)
+    assert(state4.coins==14)
+    assert(state4.candies==1)
+    assert(y==(14,1)) // $14, 1 candy left
 
   }
 

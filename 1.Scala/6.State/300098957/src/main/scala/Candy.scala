@@ -9,7 +9,7 @@ import State._
 
 object Candy {
 
-  def updateRule: Input => Machine => Machine = (i: Input) => (s: Machine) => (i, s) match {
+  def updateRule: Input => ( Machine => Machine ) = (i: Input) => (s: Machine) => (i, s) match {
           case (_, Machine(_, 0, _))        => s
           case (Coin, Machine(false, _, _)) => s
           case (Turn, Machine(true, _, _))  => s

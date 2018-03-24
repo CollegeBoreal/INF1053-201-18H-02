@@ -23,7 +23,6 @@ object Candy {
       s <- get
     } yield (s.coins, s.candies)
 
-
   def main(args: Array[String]): Unit = {
 
     // Inserting a coin into a locked machine will cause it to unlock if there’s any candy left.

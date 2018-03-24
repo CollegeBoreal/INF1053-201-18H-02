@@ -9,7 +9,7 @@ import State._
 
 object Candy {
 
-  def rule = (i: Input) => (s: Machine) => (i, s) match {
+  def updateRule = (i: Input) => (s: Machine) => (i, s) match {
           case (_, Machine(_, 0, _))        => s
           case (Coin, Machine(false, _, _)) => s
           case (Turn, Machine(true, _, _))  => s
@@ -19,7 +19,7 @@ object Candy {
 
   def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] =
     for {
-      _ <- sequence(inputs map (modify[Machine] _ compose rule))
+      _ <- sequenceViaFoldRight(inputs map (modify[Machine] _ compose updateRule))
       s <- get
     } yield (s.coins, s.candies)
 

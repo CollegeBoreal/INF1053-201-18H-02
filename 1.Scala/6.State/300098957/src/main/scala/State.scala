@@ -18,15 +18,11 @@ object State {
   def unit[S, A](a: A): State[S, A] =
     State(s => (a, s))
 
-  // The idiomatic solution is expressed via foldRight
-  def sequenceViaFoldRight[S,A](sas: List[State[S, A]]): State[S, List[A]] =
-    sas.foldRight(unit[S, List[A]](List()))((f, acc) => f.map2(acc)(_ :: _))
-
   // This implementation uses a loop internally and is the same recursion
   // pattern as a left fold. It is quite common with left folds to build
   // up a list in reverse order, then reverse it at the end.
   // (We could also use a collection.mutable.ListBuffer internally.)
-  def sequence[S, A](sas: List[State[S, A]]): State[S, List[A]] = {
+  def sequenceViaRecursion[S, A](sas: List[State[S, A]]): State[S, List[A]] = {
     def go(s: S, actions: List[State[S,A]], acc: List[A]): (List[A],S) =
       actions match {
         case Nil => (acc.reverse,s)
@@ -44,6 +40,13 @@ object State {
   // is long.
   def sequenceViaFoldLeft[S,A](l: List[State[S, A]]): State[S, List[A]] =
     l.reverse.foldLeft(unit[S, List[A]](List()))((acc, f) => f.map2(acc)( _ :: _ ))
+
+  // The idiomatic solution is expressed via foldRight
+  def sequenceViaFoldRight[S,A](sas: List[State[S, A]]): State[S, List[A]] =
+    sas.foldRight(unit[S, List[A]](List()))((f, acc) => f.map2(acc)(_ :: _))
+
+  // let's pick one implementation
+  def sequence[S, A](sas: List[State[S, A]]): State[S, List[A]] = sequenceViaFoldRight(sas)
 
   def modify[S](f: S => S): State[S, Unit] = for {
     s <- get // Gets the current state and assigns it to `s`.

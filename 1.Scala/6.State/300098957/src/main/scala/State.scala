@@ -34,7 +34,7 @@ object State {
   def sequenceViaFoldLeft[S,A](l: List[State[S, A]]): State[S, List[A]] =
     l.reverse.foldLeft(unit[S, List[A]](List()))((acc, f) => f.map2(acc)( _ :: _ ))
 
-  // The idiomatic solution is expressed via foldRight
+   // The idiomatic solution is expressed via foldRight
   def sequenceViaFoldRight[S,A](sas: List[State[S, A]]): State[S, List[A]] =
     sas.foldRight(unit[S, List[A]](List()))((f, acc) => f.map2(acc)(_ :: _))
 

@@ -19,7 +19,7 @@ object Candy {
   def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] =
     for {
       // (is: Input) =>  modify[Machine](updateRule(is)) converted to below Syntactic Sugar using compose =>
-      _ <- sequenceViaFoldRight(inputs.map(modify[Machine] _ compose updateRule))
+      _ <- sequence(inputs.map(modify[Machine] _ compose updateRule))
       s <- get
     } yield (s.coins, s.candies)
 

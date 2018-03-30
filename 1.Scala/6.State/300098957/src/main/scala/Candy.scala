@@ -16,10 +16,15 @@ object Candy {
     case (Turn, Machine(false, candy, coin)) => Machine(locked = true, candy - 1, coin)
   }
 
+  def simulateMachineT(inputs: List[Input]): State[Machine, (Int, Int)] =
+    sequenceViaFoldRight(
+      inputs.map((is: Input) =>  modify[Machine](updateRule(is)))
+    ).flatMap (_ => get map( s => (s.coins, s.candies)))
+
+  // sugarized
   def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] =
     for {
-      // (is: Input) =>  modify[Machine](updateRule(is)) converted to below Syntactic Sugar using compose =>
-      _ <- sequenceViaFoldRight(inputs.map(modify[Machine] _ compose updateRule))
+      _ <- sequence(inputs.map(modify[Machine] _ compose updateRule))
       s <- get
     } yield (s.coins, s.candies)
 
@@ -43,7 +48,7 @@ object Candy {
     assert(x==(2,0)) // $2, No candies left
 
     // the Input Machine has 10 coins and 5 candies, and a total of 4 candies are successfully bought
-    val (y,state4) = simulateMachine(List(Coin,Turn,Coin,Turn,Coin,Turn,Coin,Turn)).run(Machine(locked = true, 5, 10))
+    val (y,state4) = simulateMachineT(List(Coin,Turn,Coin,Turn,Coin,Turn,Coin,Turn)).run(Machine(locked = true, 5, 10))
     assert(state4.locked)
     assert(state4.coins==14)
     assert(state4.candies==1)

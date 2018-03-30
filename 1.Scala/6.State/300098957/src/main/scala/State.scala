@@ -41,6 +41,9 @@ object State {
   // let's pick one implementation
   def sequence[S, A](sas: List[State[S, A]]): State[S, List[A]] = sequenceViaFoldRight(sas)
 
+  // desugarized
+  def modifyT[S](f: S => S): State[S, Unit] = get.flatMap(s => set(f(s)) )
+
   def modify[S](f: S => S): State[S, Unit] = for {
     s <- get // Gets the current state and assigns it to `s`.
     _ <- set(f(s)) // Sets the new state to `f` applied to `s`.

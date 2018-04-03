@@ -56,6 +56,7 @@ object Monoid {
     assert(optionMonoid.op(Some(2),Some(3))==Some(2))
     assert(optionMonoid[String].op(None,Some("Boreal"))==Some("Boreal"))
     assert(endoMonoid[Int].op((x: Int) => x - 12,(y: Int) => 2 * y + 3)(4) == -1)
+    assert(endoMonoid[Double].zero(0.0)==0.0)
 
   }
 }

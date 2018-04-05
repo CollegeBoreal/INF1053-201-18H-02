@@ -43,6 +43,10 @@ object Monoid{
     def op(f: A => A, g: A => A) = f compose g
     val zero = (a: A) => a
   }
+
+  def foldMap[A, B](as: List[A], m: Monoid[B])(f: A => B): B =
+    as.foldLeft(m.zero)((b, a) => m.op(b, f(a)))
+
     def main(args: Array[String]): Unit = {
 
       assert(stringMonoid.op("Mamoudou", "Sow") == "MamoudouSow")
@@ -53,6 +57,12 @@ object Monoid{
       assert(bitAnd.op(1, 2) == bitAnd.zero)
       assert(optionMonoid[String].op(None, Some("Boreal")) == Some("Boreal"))
       assert(endoMonoid[Int].op((x: Int) => x - 12,(y: Int) => 2*y +3 )(4)== -1)
+      assert(foldMap(List(1,2),intAddition)((x:Int) => x + 1 )== 5)
+      assert(foldMap(List(1,2),bitAnd)((x:Int) => x << 1 )== 0)
+      assert(foldMap(List(1,2),bitOr)((x:Int) => x << 1 )== 6)
+
+
+
     }
   }
 

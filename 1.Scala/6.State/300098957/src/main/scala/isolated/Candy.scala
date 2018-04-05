@@ -19,12 +19,11 @@ object Candy {
   }
 
   type MachineState[A] = State[Machine,A]
-  val app = Applicative[MachineState]
 
   // To generate the first 5 Random integers
   def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] =
     for {
-      _ <- app.sequence(inputs.map(modify[Machine] _ compose updateRule))
+      _ <- Applicative[MachineState].sequence(inputs.map(modify[Machine] _ compose updateRule))
       s <- get
     } yield (s.coins, s.candies)
 

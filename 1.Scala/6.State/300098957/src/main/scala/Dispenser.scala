@@ -5,7 +5,7 @@ case object Annuler extends Action
 
 case class Bonbonniere(bloque: Boolean, bonbons: Int, piastres: Int)
 
-import State._
+import StateX._
 
 object Dispenser {
 
@@ -17,7 +17,7 @@ object Dispenser {
     case (Tourner, Bonbonniere(false, bonbons, piastres)) => Bonbonniere(bloque = true, bonbons - 1, piastres)
   }
 
-  def simulateMachine(actions: List[Action]): State[Bonbonniere, (Int, Int)] =
+  def simulateMachine(actions: List[Action]): StateX[Bonbonniere, (Int, Int)] =
     for {
       _ <- sequence(actions.map(modify[Bonbonniere] _ compose regles))
       s <- get

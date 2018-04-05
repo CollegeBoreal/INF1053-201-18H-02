@@ -4,7 +4,7 @@ case object Turn extends Input
 
 case class Machine(locked: Boolean, candies: Int, coins: Int)
 
-import State._
+import StateX._
 
 object Candy {
 
@@ -16,13 +16,13 @@ object Candy {
     case (Turn, Machine(false, candy, coin)) => Machine(locked = true, candy - 1, coin)
   }
 
-  def simulateMachineT(inputs: List[Input]): State[Machine, (Int, Int)] =
+  def simulateMachineT(inputs: List[Input]): StateX[Machine, (Int, Int)] =
     sequenceViaFoldRight(
       inputs.map((is: Input) =>  modify[Machine](updateRule(is)))
     ).flatMap (_ => get map( s => (s.coins, s.candies)))
 
   // sugarized
-  def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] =
+  def simulateMachine(inputs: List[Input]): StateX[Machine, (Int, Int)] =
     for {
       _ <- sequence(inputs.map(modify[Machine] _ compose updateRule))
       s <- get

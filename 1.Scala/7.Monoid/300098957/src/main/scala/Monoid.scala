@@ -27,7 +27,7 @@ object Monoid {
 
   val bitAnd: Monoid[Int] = new Monoid[Int] {
     def op(a1: Int, a2: Int) = a1 & a2
-    val zero = 0
+    val zero = 1
   }
 
   val bitOr: Monoid[Int] = new Monoid[Int] {
@@ -45,18 +45,24 @@ object Monoid {
     def op(a1: A => A, a2: A => A): A => A = a1 compose a2
   }
 
+  def foldMap[A,B](as: List[A], m: Monoid[B])(f: A => B): B =
+    as.foldLeft(m.zero)( (b,a) => m.op(b,f(a)) )
+
   def main(args: Array[String]): Unit = {
 
     assert(stringMonoid.op("Sow","Boreal")=="SowBoreal")
     assert(listMonoid.op(List(1.0,2.0),List(2.0,4.0))==List(1.0,2.0,2.0,4.0))
     assert(intAddition.op(3,4)==7)
     assert(booleanAnd.op(3 % 2 == 0, 2 + 1 == 3)!=booleanAnd.zero)
-    assert(bitAnd.op(1,2)==bitAnd.zero)
+    assert(bitAnd.op(1,2)==0)
     assert(bitOr.op(1,2)==3)
     assert(optionMonoid.op(Some(2),Some(3))==Some(2))
     assert(optionMonoid[String].op(None,Some("Boreal"))==Some("Boreal"))
     assert(endoMonoid[Int].op((x: Int) => x - 12,(y: Int) => 2 * y + 3)(4) == -1)
     assert(endoMonoid[Double].zero(0.0)==0.0)
+    assert(foldMap(List(1,2),intAddition)((x: Int) => x + 1)==5)
+    assert(foldMap(List(1,2),bitOr)((x: Int) => x << 1)==6)
+    assert(foldMap(List(1,2),bitAnd)((x: Int) => x + 1)==0)
 
   }
 }

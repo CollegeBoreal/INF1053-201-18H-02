@@ -54,6 +54,17 @@ object Candy {
     assert(state4.candies==1)
     assert(y==(14,1)) // $14, 1 candy left
 
+    // the Input Machine has 1 coin and 1 candy, and 1 candy is successfully bought
+    // Discard the state
+    val z = simulateMachine( Coin :: Turn :: Nil).eval(Machine(locked = true, 1, 1))
+    assert(z==(2,0)) // $2, No candies left
+
+    // the Input Machine has 1 coin and 1 candy, and 1 candy is successfully bought
+    // Discard the state
+    val state5 = simulateMachine( Coin :: Turn :: Nil).exec(Machine(locked = true, 1, 1))
+    assert(state5.locked)
+    assert(state5.candies==0)
+
   }
 
 }

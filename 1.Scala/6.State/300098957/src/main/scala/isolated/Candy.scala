@@ -20,7 +20,6 @@ object Candy {
 
   type MachineState[A] = State[Machine,A]
 
-  // To generate the first 5 Random integers
   def simulateMachine(inputs: List[Input]): State[Machine, (Int, Int)] =
     for {
       _ <- Applicative[MachineState].sequence(inputs.map(modify[Machine] _ compose updateRule))
